@@ -8,7 +8,6 @@ from util import make_query_url
 from tqdm import tqdm
 from multiprocessing import Pool
 
-NUM_PROCESS = 12
 
 def process_word(word):
       try:
@@ -32,17 +31,17 @@ def parse_args():
   parser.add_argument("lang",     type=str, help="language code (ja, en, ...)")
   parser.add_argument("wordlist", type=str, help="filename of word list")  
   parser.add_argument("--outdir", type=str, default="videoid", help="dirname to save video IDs")
-  parser.add_argument("--num_processes", type=int, default=50, help="number of processes to use")
+  parser.add_argument("--num_processes", type=int, default=2, help="number of processes to use")
   return parser.parse_args(sys.argv[1:])
 
 
-def obtain_video_id(lang, fn_word, outdir="videoid", wait_sec=0.2):
+def obtain_video_id(lang, fn_word, outdir="videoid", wait_sec=0.2, num_processes=2):
   fn_videoid = Path(outdir) / lang / f"{Path(fn_word).stem}_1.txt"
   fn_videoid.parent.mkdir(parents=True, exist_ok=True)
 
   with open(fn_videoid, "w") as f:
 
-    with Pool(NUM_PROCESS) as pool:
+    with Pool(num_processes) as pool:
       word_list = list(open(fn_word, "r").readlines())
       results = list(tqdm(pool.imap(process_word, word_list), total=len(word_list)))
 
@@ -56,5 +55,5 @@ def obtain_video_id(lang, fn_word, outdir="videoid", wait_sec=0.2):
 if __name__ == "__main__":
   args = parse_args()
 
-  filename = obtain_video_id(args.lang, args.wordlist, args.outdir)
+  filename = obtain_video_id(args.lang, args.wordlist, args.outdir, args.num_processes)
   print(f"save {args.lang.upper()} video IDs to {filename}.")

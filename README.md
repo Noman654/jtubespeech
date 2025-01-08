@@ -93,6 +93,13 @@ This repository provides 1) a list of YouTube videos with Japanese subtitles (JT
 ## Scripts for data collection
 `scripts/*.py` are scripts for data collection from YouTube. Since processes of the scripts are language independent, users can collect data of their favorite languages. [youtube-dl](https://github.com/ytdl-org/youtube-dl) and ffmpeg are required.
 
+### Prerequisites
+1. **Python Version**: Ensure you have Python version **3.10 or higher** installed.
+2. **FFmpeg**: Download and install FFmpeg. Refer to the [FFmpeg official website](https://ffmpeg.org/download.html) for installation instructions.
+3. **Requirements**: Install the required Python dependencies by running: 
+
+    ``` $ pip install -r requirements.txt```
+
 ### step1: making search words 
 The script `scripts/make_search_word.py` downloads the wikipedia dump file and finds words for searching videos. `{lang}` is the language code, e.g., `ja` (Japanese) and `en` (English).
 ```
@@ -101,8 +108,9 @@ $ python scripts/make_search_word.py {lang}
 ### step2: obtaining video IDs
 The script `scripts/obtain_video_id.py` obtains YouTube video IDs by searching by words. `{filename_word_list}` is a word list file made in step1. After this step, the process will take a long time. It is recommended to split the files (e.g., `{filename_word_list}`) and run them in parallel.
 ```
-$ python scripts/obtain_video_id.py {lang} {filename_word_list}
+$ python scripts/obtain_video_id.py {lang} {filename_word_list} --num_processes {cpu_count}
 ```
+
 ### step3: checking if subtitles are available
 The script `scripts/retrieve_subtitle_exists.py` retrieves whether the video has subtitles or not. `{filename_videoid_list}` is a videoID list file made in step2. This process will make a CSV file. 
 ```

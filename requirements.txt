@@ -1,0 +1,5 @@
+requests
+tqdm
+pandas
+yt-dlp[default]
+pydub
