@@ -105,6 +105,11 @@ The script `scripts/make_search_word.py` downloads the wikipedia dump file and f
 ```
 $ python scripts/make_search_word.py {lang}
 ```
+### Optional step: For Cleaning words for non english
+The script scripts/clean_word.py reads the {filename_word_list} and cleans it by removing non-English characters, special characters, digits, and other unnecessary words.
+```
+$ python scripts/clean_word.py {filename_word_list} 
+```
 ### step2: obtaining video IDs
 The script `scripts/obtain_video_id.py` obtains YouTube video IDs by searching by words. `{filename_word_list}` is a word list file made in step1. After this step, the process will take a long time. It is recommended to split the files (e.g., `{filename_word_list}`) and run them in parallel.
 ```
